@@ -7,9 +7,9 @@ def create_user_data_dir():
     user_data_dir = os.path.join(ROOT_PROJECT_PATH, 'browsers/chromium/user_data')
     if os.path.exists(user_data_dir):
         shutil.rmtree(user_data_dir)
-        print('🗑️ Đã xóa thư mục user_data cũ')
+        print('Đã xóa thư mục user_data cũ')
     os.makedirs(user_data_dir)
-    print('📂 Đã tạo thư mục user_data mới tại', user_data_dir)
+    print('Đã tạo thư mục user_data mới tại', user_data_dir)
     return user_data_dir
 
 async def setup_browser_session():
