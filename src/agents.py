@@ -37,7 +37,7 @@ async def init_agent(task, llm, headless=False):
 
     browser_session = BrowserSession(
         stealth=True,
-        headless=False,
+        headless=headless,
         storage_stage='./storage_stage.json',
         channel='chromium',
         execute_path='/snap/bin/chromium',

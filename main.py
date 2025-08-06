@@ -5,10 +5,10 @@ import sys
 import utils
 import shutil
 
+TEMP_DIR_DATA = os.path.join(utils.ROOT_PROJECT_PATH, 'tmp/files')
+TEMP_DIR_LOG = os.path.join(utils.ROOT_PROJECT_PATH, 'tmp/log')
 
 def main():
-    TEMP_DIR_DATA = os.path.join(utils.ROOT_PROJECT_PATH, 'tmp/files')
-    TEMP_DIR_LOG = os.path.join(utils.ROOT_PROJECT_PATH, 'tmp/log')
     if os.path.exists(TEMP_DIR_DATA):
         shutil.rmtree(TEMP_DIR_DATA)
         print('Đã xóa thư mục tạm thời cũ')

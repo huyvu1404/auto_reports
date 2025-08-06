@@ -13,8 +13,8 @@ def create_user_data_dir():
     return user_data_dir
 
 async def setup_browser_session():
-    user_data_dir = os.path.join(ROOT_PROJECT_PATH, 'browsers/chromium/user_data')
-    # user_data_dir = create_user_data_dir()
+    # user_data_dir = os.path.join(ROOT_PROJECT_PATH, 'browsers/chromium/user_data')
+    user_data_dir = create_user_data_dir()
     browser_session = BrowserSession(
         stealth=True,
         headless=False,
