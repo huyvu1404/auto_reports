@@ -4,13 +4,11 @@ from dotenv import load_dotenv
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../')))
-import utils
 load_dotenv()
 
 MINIO_ENDPOINT = os.getenv('MINIO_ENDPOINT', 'localhost:9000')
 MINIO_ACCESS_KEY = os.getenv('MINIO_ACCESS_KEY', 'minio')
 MINIO_SECRET_KEY = os.getenv('MINIO_SECRET_KEY', 'minio123')
-
 
 class MinioClient:
     """Singleton class to manage MinIO client connection."""
@@ -62,3 +60,11 @@ class MinioClient:
             print(f"Error downloading file: {e}")
             return False
         return True
+    
+    def list_objects(self, bucket_name, prefix='', recursive=True):
+        """List objects in a MinIO bucket."""
+        try:
+            return self.client.list_objects(bucket_name, prefix=prefix, recursive=recursive)
+        except S3Error as e:
+            print(f"Error listing objects: {e}")
+            return []
