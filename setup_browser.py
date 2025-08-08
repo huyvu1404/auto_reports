@@ -18,9 +18,7 @@ async def setup_browser_session():
     browser_session = BrowserSession(
         stealth=True,
         headless=False,
-        storage_stage='./storage_stage.json',
         channel='chromium',
-        execute_path='/snap/bin/chromium',
         wait_for_network_idle_page_load_time=3.0,
         user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36',
         highlight_elements=True,
