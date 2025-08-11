@@ -57,7 +57,7 @@ class MinioClient:
             return False
         return True
     
-    def list_objects(self, bucket_name, prefix='', recursive=True):
+    def list_objects(self, bucket_name, prefix=None, recursive=True):
         try:
             return self.client.list_objects(bucket_name, prefix=prefix, recursive=recursive)
         except S3Error as e:

@@ -23,8 +23,8 @@ Your task includes the following steps. Please follow them in order and read all
 After manus.im successfully generates the report, your new task is as follows. Again, follow the steps in order and read the notes carefully:
 
 + Step 1: Once the report has been created successfully, locate and click "View all files in this task".
-+ Step 2: Click `Batch download` at the top of the popup (index 0). In the selection window, choose only the presentation file and click "Batch download".
-+ Step 3: Return the **name** of the presentation file and its **status**.
++ Step 2: Click `Batch download` at the top-right with index = 0. In the selection window, choose only the presentation file and click "Batch download".
++ Step 3: If downloaded successfully, return the **name** of the presentation file and stutus "Download successfully". Otherwise, return "Download failed" with an empty name.
 
 IMPORTANT NOTES:
 - While waiting for Manus to process the file, **DO NOT** perform any actions — this is necessary to preserve the session token.

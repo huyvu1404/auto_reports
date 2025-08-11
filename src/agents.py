@@ -20,60 +20,51 @@ class FileStatus(BaseModel):
     status: str
 
 controller = Controller(output_model=FileStatus)
-class BrowserAgent(Agent):
-    _instance = None
 
-    def __new__(cls, *args, **kwargs):
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-        return cls._instance
+async def create_agent(**kwargs):
+    prepare_temp_chrome_profile()
 
-    @classmethod
-    async def create(cls, **kwargs):
-        # Refresh the temporary user data directory
-        prepare_temp_chrome_profile()
+    browser_session = BrowserSession(
+        stealth=True,
+        headless=kwargs.get("headless", False),
+        channel='chromium',
+        wait_for_network_idle_page_load_time=3.0,
+        user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36',
+        highlight_elements=True,
+        viewport_expansion=500,
+        disable_security=False,
+        accept_downloads=True,
+        downloads_path=DOWNLOAD_PATH,
+        user_data_dir=TEMP_USER_DATA_DIR,
+        default_timeout=60000
+    )
+    await browser_session.start()
+    page = await browser_session.get_current_page()
+    
+    llm = kwargs.get("llm")
+    if not llm:
+        raise ValueError("LLM must be provided.")
 
-        browser_session = BrowserSession(
-            stealth=True,
-            headless=kwargs.get("headless", False),
-            channel='chromium',
-            wait_for_network_idle_page_load_time=3.0,
-            user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.102 Safari/537.36',
-            highlight_elements=True,
-            viewport_expansion=500,
-            disable_security=False,
-            accept_downloads=True,
-            downloads_path=DOWNLOAD_PATH,
-            user_data_dir=TEMP_USER_DATA_DIR,
-            default_timeout=60000
-        )
-        await browser_session.start()
-        page = await browser_session.get_current_page()
-        
-        llm = kwargs.get("llm")
-        if not llm:
-            raise ValueError("LLM must be provided.")
+    task = PROMPT_TEMPLATE.format(
+        google_account=os.getenv("GOOGLE_ACCOUNT"),
+        url=kwargs.get("url", ""),
+        task=kwargs.get("task", "")
+    )
 
-        task = PROMPT_TEMPLATE.format(
-            google_account=os.getenv("GOOGLE_ACCOUNT"),
-            url=kwargs.get("url", ""),
-            task=kwargs.get("task", "")
-        )
-
-        obj = cls(
-            task=task,
-            llm=llm,
-            page=page,
-            initial_actions=INITIAL_ACTIONS,
-            browser_session=browser_session,
-            controller=controller,
-            max_actions_per_step=6,
-            max_failures=6,
-            retry_delay=5,
-            save_conversation_path=CONVERSATION_PATH,
-            llm_timeout=30
-        )
-        return obj
+    agent = Agent(
+        task=task,
+        llm=llm,
+        page=page,
+        initial_actions=INITIAL_ACTIONS,
+        browser_session=browser_session,
+        controller=controller,
+        max_actions_per_step=6,
+        max_failures=6,
+        retry_delay=5,
+        save_conversation_path=CONVERSATION_PATH,
+        llm_timeout=30
+    )
+    return agent
 
     
 # async def init_agent(task, url, llm, headless=False):
