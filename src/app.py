@@ -124,8 +124,8 @@ def authentication_block():
                     # st.info(msg)
             
             with tab_register:
-                reg_user_input = st.text_input("New Username", key="register_username")
-                reg_pass_input = st.text_input("New Password", type="password", key="register_password")
+                reg_user_input = st.text_input("Username", key="register_username")
+                reg_pass_input = st.text_input("Password", type="password", key="register_password")
                 if st.button("Register"):
                     ok = register_user(conn, reg_user_input, reg_pass_input)
                     if ok:
@@ -239,7 +239,7 @@ async def create_app(headless=False):
                                 st.rerun()
                         else:
                             st.error("Failed to upload file to MinIO.")
-                        # Sau khi rerun, hiển thị thông báo và reset state
+                       
                         if st.session_state.get("file_downloaded", False):
                             st.success("✅ File đã được tải về!")
                             st.session_state["file_downloaded"] = False
